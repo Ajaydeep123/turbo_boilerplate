@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import {hashData, compareHash} from "../utils/hashHelper"
 import { createToken } from "../utils/jwtHelper";
-import db from "@repo/db"
+import {prisma} from "@repo/db"
 
 
 
@@ -17,7 +17,7 @@ export const signup = async (req : Request, res: Response) =>{
 
     const hashedPassword = await hashData(password);
 
-    const createUser = await db.user.create({
+    const createUser = await prisma.user.create({
         data:{
             username:username,
             password:hashedPassword,
@@ -41,7 +41,7 @@ export const signin = async(req:Request, res:Response) =>{
         })
     }
 
-    const user = await db.user.findFirst({
+    const user = await prisma.user.findFirst({
         where:{
             username
         }
